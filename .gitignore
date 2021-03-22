@@ -1,0 +1,18 @@
+node_modules
+build
+vendor
+# Use yarn, not npm
+./package-lock.json
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+codeFolder
+
+# Misc
+.DS_Store
+
+# Ignore bastion SSH keys
+ssh-bastion.pub
+ssh-bastion
+
