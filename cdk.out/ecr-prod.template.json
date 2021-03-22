@@ -1,0 +1,45 @@
+{
+  "Resources": {
+    "sample19A77B3F": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "prod-ecr-sample"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "ecr-prod/sample/Resource"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAEzWNQQqDMBAA39J7XBvx0pvgD9IXyLpClGZld9NSQv5eRXoaBgbGw6MHfxumjzY4b21BFoLytAk3N3JSk4zmxiUFUs6CVN3ZEgqUQDtrNJbvFfytVpd4Jli1ffsOuvtxWDXGRnKy+CIIF3/FtP7afQAAAA=="
+      },
+      "Metadata": {
+        "aws:cdk:path": "ecr-prod/CDKMetadata/Default"
+      }
+    }
+  },
+  "Outputs": {
+    "ExportsOutputFnGetAttsample19A77B3FArn6C8CA84B": {
+      "Value": {
+        "Fn::GetAtt": [
+          "sample19A77B3F",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": "ecr-prod:ExportsOutputFnGetAttsample19A77B3FArn6C8CA84B"
+      }
+    },
+    "ExportsOutputRefsample19A77B3FEF1C162C": {
+      "Value": {
+        "Ref": "sample19A77B3F"
+      },
+      "Export": {
+        "Name": "ecr-prod:ExportsOutputRefsample19A77B3FEF1C162C"
+      }
+    }
+  }
+}

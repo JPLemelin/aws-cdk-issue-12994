@@ -1,0 +1,240 @@
+{
+  "Resources": {
+    "taskDefTaskRole62C7276F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "service-sample-prod/taskDef/TaskRole/Resource"
+      }
+    },
+    "taskDef43A87EA0": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Essential": true,
+            "Image": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::Select": [
+                      4,
+                      {
+                        "Fn::Split": [
+                          ":",
+                          {
+                            "Fn::ImportValue": "ecr-prod:ExportsOutputFnGetAttsample19A77B3FArn6C8CA84B"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  ".dkr.ecr.",
+                  {
+                    "Fn::Select": [
+                      3,
+                      {
+                        "Fn::Split": [
+                          ":",
+                          {
+                            "Fn::ImportValue": "ecr-prod:ExportsOutputFnGetAttsample19A77B3FArn6C8CA84B"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/",
+                  {
+                    "Fn::ImportValue": "ecr-prod:ExportsOutputRefsample19A77B3FEF1C162C"
+                  },
+                  ":latest"
+                ]
+              ]
+            },
+            "Name": "myContainer",
+            "PortMappings": [
+              {
+                "ContainerPort": 80,
+                "Protocol": "tcp"
+              }
+            ]
+          }
+        ],
+        "Cpu": "256",
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "taskDefExecutionRole9295A8C0",
+            "Arn"
+          ]
+        },
+        "Family": "servicesampleprodtaskDef52857594",
+        "Memory": "512",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE"
+        ],
+        "TaskRoleArn": {
+          "Fn::GetAtt": [
+            "taskDefTaskRole62C7276F",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "service-sample-prod/taskDef/Resource"
+      }
+    },
+    "taskDefExecutionRole9295A8C0": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "service-sample-prod/taskDef/ExecutionRole/Resource"
+      }
+    },
+    "taskDefExecutionRoleDefaultPolicy5FB63CF7": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::ImportValue": "ecr-prod:ExportsOutputFnGetAttsample19A77B3FArn6C8CA84B"
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "taskDefExecutionRoleDefaultPolicy5FB63CF7",
+        "Roles": [
+          {
+            "Ref": "taskDefExecutionRole9295A8C0"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "service-sample-prod/taskDef/ExecutionRole/DefaultPolicy/Resource"
+      }
+    },
+    "serviceService7DDC3B7C": {
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {
+          "Fn::ImportValue": "baseInfra-prod:ExportsOutputRefclusterprod4E0199DB940DE1AE"
+        },
+        "DeploymentConfiguration": {
+          "MaximumPercent": 200,
+          "MinimumHealthyPercent": 50
+        },
+        "EnableECSManagedTags": false,
+        "HealthCheckGracePeriodSeconds": 60,
+        "LaunchType": "FARGATE",
+        "LoadBalancers": [
+          {
+            "ContainerName": "myContainer",
+            "ContainerPort": 80,
+            "TargetGroupArn": {
+              "Fn::ImportValue": "baseInfra-prod:ExportsOutputRefcognitosampletargetgroupprod8EF6E1430A36DFCB"
+            }
+          }
+        ],
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "ENABLED",
+            "SecurityGroups": [
+              {
+                "Fn::GetAtt": [
+                  "serviceSecurityGroupF051F0EB",
+                  "GroupId"
+                ]
+              }
+            ],
+            "Subnets": [
+              {
+                "Fn::ImportValue": "baseInfra-prod:ExportsOutputRefvpcprodIngressSubnet1SubnetDCB4721B38AC7015"
+              },
+              {
+                "Fn::ImportValue": "baseInfra-prod:ExportsOutputRefvpcprodIngressSubnet2Subnet7246AA881B78DE6A"
+              }
+            ]
+          }
+        },
+        "TaskDefinition": {
+          "Ref": "taskDef43A87EA0"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "service-sample-prod/service/Service"
+      }
+    },
+    "serviceSecurityGroupF051F0EB": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "service-sample-prod/service/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Fn::ImportValue": "baseInfra-prod:ExportsOutputRefvpcprodE541668E3622542C"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "service-sample-prod/service/SecurityGroup/Resource"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE12PsQ7CMAxEv4U9DbRiYUMCwYoKPxC5BrmlNnISEIry79CWoWK689OdZZd2s7blYutevoCmWyYQRZvOwUFndsI+aIRgdleu0UtUwGyGbELwNh2c3lzAi/PdHq/EFEh4CP8T4eCIUWfs1z2jPglwKP1sNuR6m2q5j3TUk9wJ3sM4uWwQqu+ZCFEpvI8q8TGtmIGcs2Fp0LZ++SwrW62+n7aeqNDIgXq09aQfrystEAUBAAA="
+      },
+      "Metadata": {
+        "aws:cdk:path": "service-sample-prod/CDKMetadata/Default"
+      }
+    }
+  }
+}

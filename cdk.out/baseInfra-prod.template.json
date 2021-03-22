@@ -1,0 +1,749 @@
+{
+  "Resources": {
+    "vpcprodE541668E": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/Resource"
+      }
+    },
+    "vpcprodIngressSubnet1SubnetDCB4721B": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/24",
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        },
+        "AvailabilityZone": "ca-central-1a",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Ingress"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod/IngressSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/IngressSubnet1/Subnet"
+      }
+    },
+    "vpcprodIngressSubnet1RouteTable7B634DE7": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod/IngressSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/IngressSubnet1/RouteTable"
+      }
+    },
+    "vpcprodIngressSubnet1RouteTableAssociation521D8F96": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcprodIngressSubnet1RouteTable7B634DE7"
+        },
+        "SubnetId": {
+          "Ref": "vpcprodIngressSubnet1SubnetDCB4721B"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/IngressSubnet1/RouteTableAssociation"
+      }
+    },
+    "vpcprodIngressSubnet1DefaultRoute8474A7DE": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcprodIngressSubnet1RouteTable7B634DE7"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcprodIGWFDB7E40C"
+        }
+      },
+      "DependsOn": [
+        "vpcprodVPCGWF1BE819E"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/IngressSubnet1/DefaultRoute"
+      }
+    },
+    "vpcprodIngressSubnet2Subnet7246AA88": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.1.0/24",
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        },
+        "AvailabilityZone": "ca-central-1b",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Ingress"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod/IngressSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/IngressSubnet2/Subnet"
+      }
+    },
+    "vpcprodIngressSubnet2RouteTable650FD1F2": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod/IngressSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/IngressSubnet2/RouteTable"
+      }
+    },
+    "vpcprodIngressSubnet2RouteTableAssociation543B53ED": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcprodIngressSubnet2RouteTable650FD1F2"
+        },
+        "SubnetId": {
+          "Ref": "vpcprodIngressSubnet2Subnet7246AA88"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/IngressSubnet2/RouteTableAssociation"
+      }
+    },
+    "vpcprodIngressSubnet2DefaultRouteE209D48A": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcprodIngressSubnet2RouteTable650FD1F2"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcprodIGWFDB7E40C"
+        }
+      },
+      "DependsOn": [
+        "vpcprodVPCGWF1BE819E"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/IngressSubnet2/DefaultRoute"
+      }
+    },
+    "vpcprodDatabaseSubnet1SubnetAE35E973": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.2.0/24",
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        },
+        "AvailabilityZone": "ca-central-1a",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Database"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod/DatabaseSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/DatabaseSubnet1/Subnet"
+      }
+    },
+    "vpcprodDatabaseSubnet1RouteTable9303BDD0": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod/DatabaseSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/DatabaseSubnet1/RouteTable"
+      }
+    },
+    "vpcprodDatabaseSubnet1RouteTableAssociation52BA722D": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcprodDatabaseSubnet1RouteTable9303BDD0"
+        },
+        "SubnetId": {
+          "Ref": "vpcprodDatabaseSubnet1SubnetAE35E973"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/DatabaseSubnet1/RouteTableAssociation"
+      }
+    },
+    "vpcprodDatabaseSubnet2SubnetFDB32BBB": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.3.0/24",
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        },
+        "AvailabilityZone": "ca-central-1b",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Database"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod/DatabaseSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/DatabaseSubnet2/Subnet"
+      }
+    },
+    "vpcprodDatabaseSubnet2RouteTable6FF86D55": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod/DatabaseSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/DatabaseSubnet2/RouteTable"
+      }
+    },
+    "vpcprodDatabaseSubnet2RouteTableAssociation6393197B": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcprodDatabaseSubnet2RouteTable6FF86D55"
+        },
+        "SubnetId": {
+          "Ref": "vpcprodDatabaseSubnet2SubnetFDB32BBB"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/DatabaseSubnet2/RouteTableAssociation"
+      }
+    },
+    "vpcprodIGWFDB7E40C": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "baseInfra-prod/vpc-prod"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/IGW"
+      }
+    },
+    "vpcprodVPCGWF1BE819E": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        },
+        "InternetGatewayId": {
+          "Ref": "vpcprodIGWFDB7E40C"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/vpc-prod/VPCGW"
+      }
+    },
+    "clusterprod4E0199DB": {
+      "Type": "AWS::ECS::Cluster",
+      "Properties": {
+        "ClusterName": "prod-sample-cluster"
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/cluster-prod/Resource"
+      }
+    },
+    "albsg40B076C4": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "baseInfra-prod/alb-sg",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Required by Idp Auth (cognito)",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow from anyone on port 80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/alb-sg/Resource"
+      }
+    },
+    "albprod74126D58": {
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Properties": {
+        "LoadBalancerAttributes": [
+          {
+            "Key": "deletion_protection.enabled",
+            "Value": "false"
+          }
+        ],
+        "Scheme": "internet-facing",
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "albsg40B076C4",
+              "GroupId"
+            ]
+          }
+        ],
+        "Subnets": [
+          {
+            "Ref": "vpcprodIngressSubnet1SubnetDCB4721B"
+          },
+          {
+            "Ref": "vpcprodIngressSubnet2Subnet7246AA88"
+          }
+        ],
+        "Type": "application"
+      },
+      "DependsOn": [
+        "vpcprodIngressSubnet1DefaultRoute8474A7DE",
+        "vpcprodIngressSubnet2DefaultRouteE209D48A"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/alb-prod/Resource"
+      }
+    },
+    "albprodlistenerhttpsprodF39FEF8C": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "DefaultActions": [
+          {
+            "FixedResponseConfig": {
+              "StatusCode": "200"
+            },
+            "Type": "fixed-response"
+          }
+        ],
+        "LoadBalancerArn": {
+          "Ref": "albprod74126D58"
+        },
+        "Port": 80,
+        "Protocol": "HTTP"
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/alb-prod/listener-https-prod/Resource"
+      }
+    },
+    "albprodlistenerhttpsprodcognitosamplelistneractionprodRule8458335D": {
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+      "Properties": {
+        "Actions": [
+          {
+            "AuthenticateCognitoConfig": {
+              "UserPoolArn": {
+                "Fn::GetAtt": [
+                  "userpool38E431F2",
+                  "Arn"
+                ]
+              },
+              "UserPoolClientId": {
+                "Ref": "userpooluserpoolclientalb1970C691"
+              },
+              "UserPoolDomain": {
+                "Ref": "userpoolcognitodomain9FB999A6"
+              }
+            },
+            "Order": 1,
+            "Type": "authenticate-cognito"
+          },
+          {
+            "Order": 2,
+            "TargetGroupArn": {
+              "Ref": "cognitosampletargetgroupprod8EF6E143"
+            },
+            "Type": "forward"
+          }
+        ],
+        "Conditions": [
+          {
+            "Field": "host-header",
+            "Values": [
+              "cognito-sample.unicornpowered.io"
+            ]
+          }
+        ],
+        "ListenerArn": {
+          "Ref": "albprodlistenerhttpsprodF39FEF8C"
+        },
+        "Priority": 100
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/alb-prod/listener-https-prod/cognito-sample-listner-action-prodRule/Resource"
+      }
+    },
+    "albprodlistenerhttpsprodcognitosamplepatchedlistneractionprodRule9F1E61E0": {
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+      "Properties": {
+        "Actions": [
+          {
+            "AuthenticateCognitoConfig": {
+              "UserPoolArn": {
+                "Fn::GetAtt": [
+                  "userpool38E431F2",
+                  "Arn"
+                ]
+              },
+              "UserPoolClientId": {
+                "Ref": "userpooluserpoolclientalb1970C691"
+              },
+              "UserPoolDomain": {
+                "Ref": "userpoolcognitodomain9FB999A6"
+              }
+            },
+            "Order": 1,
+            "Type": "authenticate-cognito"
+          },
+          {
+            "Order": 2,
+            "TargetGroupArn": {
+              "Ref": "cognitosamplepatchedtargetgroupprodC7087613"
+            },
+            "Type": "forward"
+          }
+        ],
+        "Conditions": [
+          {
+            "Field": "host-header",
+            "Values": [
+              "cognito-sample-patched.unicornpowered.io"
+            ]
+          }
+        ],
+        "ListenerArn": {
+          "Ref": "albprodlistenerhttpsprodF39FEF8C"
+        },
+        "Priority": 200
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/alb-prod/listener-https-prod/cognito-sample-patched-listner-action-prodRule/Resource"
+      }
+    },
+    "albprodlistenerhttpsprodwhitoutcognitosamplelistneractionprodRule3100C020": {
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+      "Properties": {
+        "Actions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "whitoutcognitosampletargetgroupprod95450DAE"
+            },
+            "Type": "forward"
+          }
+        ],
+        "Conditions": [
+          {
+            "Field": "host-header",
+            "Values": [
+              "whitout-cognito-sample.unicornpowered.io"
+            ]
+          }
+        ],
+        "ListenerArn": {
+          "Ref": "albprodlistenerhttpsprodF39FEF8C"
+        },
+        "Priority": 300
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/alb-prod/listener-https-prod/whitout-cognito-sample-listner-action-prodRule/Resource"
+      }
+    },
+    "userpool38E431F2": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_email",
+              "Priority": 1
+            }
+          ]
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "Policies": {
+          "PasswordPolicy": {
+            "MinimumLength": 8,
+            "RequireLowercase": true,
+            "RequireNumbers": true,
+            "RequireSymbols": false,
+            "RequireUppercase": true,
+            "TemporaryPasswordValidityDays": 3
+          }
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/user-pool/Resource"
+      }
+    },
+    "userpoolcognitodomain9FB999A6": {
+      "Type": "AWS::Cognito::UserPoolDomain",
+      "Properties": {
+        "Domain": "this-is-a-sample-prod",
+        "UserPoolId": {
+          "Ref": "userpool38E431F2"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/user-pool/cognito-domain/Resource"
+      }
+    },
+    "userpooluserpoolclientalb1970C691": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "userpool38E431F2"
+        },
+        "AllowedOAuthFlows": [
+          "code"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "email",
+          "openid"
+        ],
+        "CallbackURLs": [
+          "https://example.com"
+        ],
+        "ExplicitAuthFlows": [
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH"
+        ],
+        "GenerateSecret": true,
+        "RefreshTokenValidity": 43200,
+        "SupportedIdentityProviders": [
+          "COGNITO"
+        ],
+        "TokenValidityUnits": {
+          "RefreshToken": "minutes"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/user-pool/user-pool-client-alb/Resource"
+      }
+    },
+    "cognitosampletargetgroupprod8EF6E143": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "HealthCheckPath": "/",
+        "Port": 80,
+        "Protocol": "HTTP",
+        "TargetType": "ip",
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/cognito-sample-target-group-prod/Resource"
+      }
+    },
+    "cognitosamplepatchedtargetgroupprodC7087613": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "HealthCheckPath": "/",
+        "Port": 80,
+        "Protocol": "HTTP",
+        "TargetType": "ip",
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/cognito-sample-patched-target-group-prod/Resource"
+      }
+    },
+    "whitoutcognitosampletargetgroupprod95450DAE": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "HealthCheckPath": "/",
+        "Port": 80,
+        "Protocol": "HTTP",
+        "TargetType": "ip",
+        "VpcId": {
+          "Ref": "vpcprodE541668E"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/whitout-cognito-sample-target-group-prod/Resource"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE21SS2/CMAz+LbuHMNAuu411Epq0Q9Uy7qnxmCHEVR5FqOp/X/qiRdop38tObGUlX1/k6ulNXd0CDudlDWxR1rlXcBYZOg4WUCRsnLcBvEh+zKg2oi2qEday3pfQWvs0EWkoNEEeCoNdfEIZB487VWic9EnbOMdAyhObe1iklirlcerxaTzaiLdRvarbcOnANj4++/eCxoscIVjyt63lUHbXzYVGIDhZJzq42K61BxgNrZwn0KwOhdLKAJljFSfclGUcq3veV/TeO6+vfeDzHMWWZsiM+B8/C/1GHvgst1P2GCceJ5nRRgAfDXmW9bdDmzLrNnHHI/jgiyIztwZlpImmdmuzQK80TSMMH1Ce3LJareX6OX6WkyNa2GA8XVBm/fkH+6DOw0gCAAA="
+      },
+      "Metadata": {
+        "aws:cdk:path": "baseInfra-prod/CDKMetadata/Default"
+      }
+    }
+  },
+  "Outputs": {
+    "ExportsOutputRefclusterprod4E0199DB940DE1AE": {
+      "Value": {
+        "Ref": "clusterprod4E0199DB"
+      },
+      "Export": {
+        "Name": "baseInfra-prod:ExportsOutputRefclusterprod4E0199DB940DE1AE"
+      }
+    },
+    "ExportsOutputRefcognitosampletargetgroupprod8EF6E1430A36DFCB": {
+      "Value": {
+        "Ref": "cognitosampletargetgroupprod8EF6E143"
+      },
+      "Export": {
+        "Name": "baseInfra-prod:ExportsOutputRefcognitosampletargetgroupprod8EF6E1430A36DFCB"
+      }
+    },
+    "ExportsOutputRefvpcprodIngressSubnet1SubnetDCB4721B38AC7015": {
+      "Value": {
+        "Ref": "vpcprodIngressSubnet1SubnetDCB4721B"
+      },
+      "Export": {
+        "Name": "baseInfra-prod:ExportsOutputRefvpcprodIngressSubnet1SubnetDCB4721B38AC7015"
+      }
+    },
+    "ExportsOutputRefvpcprodIngressSubnet2Subnet7246AA881B78DE6A": {
+      "Value": {
+        "Ref": "vpcprodIngressSubnet2Subnet7246AA88"
+      },
+      "Export": {
+        "Name": "baseInfra-prod:ExportsOutputRefvpcprodIngressSubnet2Subnet7246AA881B78DE6A"
+      }
+    },
+    "ExportsOutputRefvpcprodE541668E3622542C": {
+      "Value": {
+        "Ref": "vpcprodE541668E"
+      },
+      "Export": {
+        "Name": "baseInfra-prod:ExportsOutputRefvpcprodE541668E3622542C"
+      }
+    },
+    "ExportsOutputRefwhitoutcognitosampletargetgroupprod95450DAE74283A30": {
+      "Value": {
+        "Ref": "whitoutcognitosampletargetgroupprod95450DAE"
+      },
+      "Export": {
+        "Name": "baseInfra-prod:ExportsOutputRefwhitoutcognitosampletargetgroupprod95450DAE74283A30"
+      }
+    },
+    "ExportsOutputFnGetAttalbsg40B076C4GroupId00309A0E": {
+      "Value": {
+        "Fn::GetAtt": [
+          "albsg40B076C4",
+          "GroupId"
+        ]
+      },
+      "Export": {
+        "Name": "baseInfra-prod:ExportsOutputFnGetAttalbsg40B076C4GroupId00309A0E"
+      }
+    },
+    "ExportsOutputRefcognitosamplepatchedtargetgroupprodC7087613C6173573": {
+      "Value": {
+        "Ref": "cognitosamplepatchedtargetgroupprodC7087613"
+      },
+      "Export": {
+        "Name": "baseInfra-prod:ExportsOutputRefcognitosamplepatchedtargetgroupprodC7087613C6173573"
+      }
+    }
+  }
+}
