@@ -1,5 +1,6 @@
-import * as cdk from '@aws-cdk/core'
-import * as ecr from '@aws-cdk/aws-ecr'
+import * as cdk from 'aws-cdk-lib'
+import { Construct } from 'constructs'
+import * as ecr from 'aws-cdk-lib/aws-ecr'
 
 export interface EcrStackProps extends cdk.StackProps {
   envName: string;
@@ -10,7 +11,7 @@ export class EcrStack extends cdk.Stack {
 
   public readonly ecr: ecr.IRepository
 
-  constructor(scope: cdk.Construct, id: string, props: EcrStackProps) {
+  constructor(scope: Construct, id: string, props: EcrStackProps) {
     super(scope, id, props)
 
     // ECR Repository

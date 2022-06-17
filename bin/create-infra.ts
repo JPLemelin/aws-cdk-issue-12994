@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib'
+import { Construct } from 'constructs';
 import { BaseInfraStack } from '../lib/base-infra-stack';
 import { EcrStack } from '../lib/ecr-stack';
 import { ServiceSample } from '../lib/service-sample';

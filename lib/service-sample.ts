@@ -1,9 +1,10 @@
-import * as cdk from '@aws-cdk/core'
+import * as cdk from 'aws-cdk-lib'
+import { Construct } from 'constructs'
 
-import * as ec2 from '@aws-cdk/aws-ec2'
-import * as ecr from '@aws-cdk/aws-ecr'
-import * as ecs from '@aws-cdk/aws-ecs'
-import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2'
+import * as ec2 from 'aws-cdk-lib/aws-ec2'
+import * as ecr from 'aws-cdk-lib/aws-ecr'
+import * as ecs from 'aws-cdk-lib/aws-ecs'
+import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2'
 
 
 export interface ServiceSampleProps extends cdk.StackProps {
@@ -17,7 +18,7 @@ export interface ServiceSampleProps extends cdk.StackProps {
 export class ServiceSample extends cdk.Stack {
   public readonly service: ecs.FargateService
 
-  constructor(scope: cdk.Construct, id: string, props: ServiceSampleProps) {
+  constructor(scope: Construct, id: string, props: ServiceSampleProps) {
     super(scope, id, props)
 
     const taskDefinition = new ecs.FargateTaskDefinition(this, 'taskDef', {

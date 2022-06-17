@@ -1,12 +1,13 @@
-import * as cdk from '@aws-cdk/core'
+import * as cdk from 'aws-cdk-lib'
+import { Construct } from 'constructs'
 
-import * as cognito from '@aws-cdk/aws-cognito'
-import * as ec2 from '@aws-cdk/aws-ec2'
-import * as ecs from '@aws-cdk/aws-ecs'
-import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2'
-import * as elbv2Actions from '@aws-cdk/aws-elasticloadbalancingv2-actions'
-import * as route53 from '@aws-cdk/aws-route53'
-import * as route53Targets from '@aws-cdk/aws-route53-targets'
+import * as cognito from 'aws-cdk-lib/aws-cognito'
+import * as ec2 from 'aws-cdk-lib/aws-ec2'
+import * as ecs from 'aws-cdk-lib/aws-ecs'
+import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2'
+import * as elbv2Actions from 'aws-cdk-lib/aws-elasticloadbalancingv2-actions'
+import * as route53 from 'aws-cdk-lib/aws-route53'
+import * as route53Targets from 'aws-cdk-lib/aws-route53-targets'
 
 export interface BaseInfraStackProps extends cdk.StackProps {
   envName: string;
@@ -25,7 +26,7 @@ export class BaseInfraStack extends cdk.Stack {
 
   public readonly albSG: ec2.ISecurityGroup;
 
-  constructor(scope: cdk.Construct, id: string, props: BaseInfraStackProps) {
+  constructor(scope: Construct, id: string, props: BaseInfraStackProps) {
     super(scope, id, props)
 
     // Config
@@ -176,7 +177,9 @@ export class BaseInfraStack extends cdk.Stack {
       // Add rule to redirect to targetgroup
       listner.addAction(`${serviceName}-listner-action-${props.envName}`, {
         priority: serviceListnerPriority,
-        hostHeader: service.subDomain ? `${service.subDomain}.${service.domain}` : service.domain,
+        conditions: [
+          elbv2.ListenerCondition.hostHeaders([service.subDomain ? `${service.subDomain}.${service.domain}` : service.domain,])
+        ],
         action: action
       })
 
